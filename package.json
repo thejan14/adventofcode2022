@@ -1,0 +1,21 @@
+{
+  "name": "adventofcode2022",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thejan14/adventofcode2022.git"
+  },
+  "author": "Jan Oberpichler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thejan14/adventofcode2022/issues"
+  },
+  "homepage": "https://github.com/thejan14/adventofcode2022#readme",
+  "devDependencies": {
+    "eslint": "^8.27.0",
+    "prettier": "^2.7.1"
+  }
+}
