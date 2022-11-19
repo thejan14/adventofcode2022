@@ -1,8 +1,8 @@
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=thejan14.adventofcode2022)
 
-# Advent of Code 2021
+# Advent of Code 2022
 
-Welcome to my [Advent of Code](https://adventofcode.com/2022) 2021 contribution! The solutions are written in JavaScript using Node.js. When writing the solutions code I primarily aim for readability but try to always keep performance considerations in mind (thought the latter strongly depends on how much time I can spend). Happy reading!
+Welcome to my [Advent of Code](https://adventofcode.com/2022) 2022 contribution! The solutions are written in JavaScript using Node.js. When writing the solutions code I primarily aim for readability but try to always keep performance considerations in mind (thought the latter strongly depends on how much time I can spend). Happy reading!
 
 ## What is Advent of Code?
 Advent of code is made by [Eric Wastl](https://github.com/topaz).
