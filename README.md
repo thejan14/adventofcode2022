@@ -16,3 +16,5 @@ For running the code you need the [Node.js runtime](https://nodejs.org/en/) inst
 ```
 node dayXX/partX.js
 ```
+
+You can also have a look at my [repl](https://replit.com/) at [https://repl.it/@thejan14/adventofcode2022](https://repl.it/@thejan14/adventofcode2022) to run and fiddle with the soltions right away!
