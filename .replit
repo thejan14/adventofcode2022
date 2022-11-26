@@ -1,0 +1,2 @@
+language = "node"
+run = "node index.js"
