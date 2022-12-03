@@ -17,16 +17,12 @@ const answer = input
     ([compartmentA, compartmentB]) =>
       [...compartmentA].filter((item) => compartmentB.includes(item))[0]
   )
-  .map((item) => getItemPriority(item))
+  .map((item) =>
+    item === item.toUpperCase()
+      ? item.charCodeAt(0) - 65 + 27
+      : item.charCodeAt(0) - 97 + 1
+  )
   .reduce((acc, priority) => acc + priority, 0);
-
-function getItemPriority(item) {
-  if (item === item.toUpperCase()) {
-    return item.charCodeAt(0) - 65 + 27;
-  } else {
-    return item.charCodeAt(0) - 97 + 1;
-  }
-}
 
 /* end solution */
 
