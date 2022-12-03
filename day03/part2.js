@@ -7,6 +7,7 @@ const execStart = performance.now();
 
 /* begin solution */
 
+// https://jsbench.me/tblb7rvolp/1
 const answer = input
   .match(/\w+\n\w+\n\w+/g)
   .map((group) => group.match(/(?<item>\w).*\n.*\k<item>.*\n.*\k<item>/)) // matches a character appearing in all three lines
