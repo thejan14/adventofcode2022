@@ -10,12 +10,12 @@ const execStart = performance.now();
 const answer = input
   .split("\n")
   .map((line) => [
-    new Set(line.substring(0, line.length / 2)),
-    new Set(line.substring(line.length / 2, line.length)),
+    line.substring(0, line.length / 2),
+    line.substring(line.length / 2, line.length),
   ])
   .map(
     ([compartmentA, compartmentB]) =>
-      [...compartmentA].filter((item) => compartmentB.has(item))[0]
+      [...compartmentA].filter((item) => compartmentB.includes(item))[0]
   )
   .map((item) => getItemPriority(item))
   .reduce((acc, priority) => acc + priority, 0);
