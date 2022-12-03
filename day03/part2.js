@@ -9,17 +9,8 @@ const execStart = performance.now();
 
 const answer = input
   .match(/\w+\n\w+\n\w+/g)
-  .map((group) => group.split("\n"))
-  .map(
-    (rucksacks) =>
-      rucksacks
-        .slice(1)
-        .reduce(
-          (commonItems, rucksackItems) =>
-            [...rucksackItems].filter((item) => commonItems.includes(item)),
-          rucksacks[0]
-        )[0]
-  )
+  .map((group) => group.match(/(?<item>\w).*\n.*\k<item>.*\n.*\k<item>/)) // matches a character appearing in all three lines
+  .map((match) => match.groups["item"])
   .map((item) =>
     item === item.toUpperCase()
       ? item.charCodeAt(0) - 65 + 27
