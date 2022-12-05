@@ -13,17 +13,15 @@ const [stackInput, instructionInput] = input.split("\n\n");
 const stacks = Array.from({ length: 9 }, () => []);
 stackInput
   .split("\n")
-  .reverse() // construct stacks bottom up
-  .slice(1) // skip stack label line
+  .slice(0, -1) // skip stack label line (last line)
   .forEach((line) => {
-    [...line]
-      .filter((_, i) => (i - 1) % 4 === 0) // take every 4th character, starting at 1
-      .forEach((c, i) => {
-        // whitespace denotes empty space for given stack in the stack layer
-        if (c !== " ") {
-          stacks[i].push(c);
-        }
-      });
+    // take every 4th character, starting at 1
+    for (let i = 1; i < line.length; i += 4) {
+      // whitespace figures empty space for given stack in the stack layer
+      if (line[i] !== " ") {
+        stacks[(i - 1) / 4].unshift(line[i]);
+      }
+    }
   });
 
 // parse and apply instructions
