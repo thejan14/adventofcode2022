@@ -1,122 +1,108 @@
-# Day 5: Supply Stacks
+# Day 7: No Space Left On Device
 
-[https://adventofcode.com/2022/day/5](https://adventofcode.com/2022/day/5)
+[https://adventofcode.com/2022/day/7](https://adventofcode.com/2022/day/7)
 
 ## Description
 
 ### Part One
 
-The expedition can depart as soon as the final supplies have been unloaded from the ships. Supplies are stored in stacks of marked _crates_, but because the needed supplies are buried under many other crates, the crates need to be rearranged.
+You can hear birds chirping and raindrops hitting leaves as the expedition proceeds. Occasionally, you can even hear much louder sounds in the distance; how big do the animals get out here, anyway?
 
-The ship has a _giant cargo crane_ capable of moving crates between stacks. To ensure none of the crates get crushed or fall over, the crane operator will rearrange them in a series of carefully-planned steps. After the crates are rearranged, the desired crates will be at the top of each stack.
+The device the Elves gave you has problems with more than just its communication system. You try to run a system update:
 
-The Elves don't want to interrupt the crane operator during this delicate procedure, but they forgot to ask her _which_ crate will end up where, and they want to be ready to unload them as soon as possible so they can embark.
-
-They do, however, have a drawing of the starting stacks of crates _and_ the rearrangement procedure (your puzzle input). For example:
-
-        [D]    
-    [N] [C]    
-    [Z] [M] [P]
-     1   2   3 
-    
-    move 1 from 2 to 1
-    move 3 from 1 to 3
-    move 2 from 2 to 1
-    move 1 from 1 to 2
+    $ system-update --please --pretty-please-with-sugar-on-top
+    Error: No space left on device
     
 
-In this example, there are three stacks of crates. Stack 1 contains two crates: crate `Z` is on the bottom, and crate `N` is on top. Stack 2 contains three crates; from bottom to top, they are crates `M`, `C`, and `D`. Finally, stack 3 contains a single crate, `P`.
+Perhaps you can delete some files to make space for the update?
 
-Then, the rearrangement procedure is given. In each step of the procedure, a quantity of crates is moved from one stack to a different stack. In the first step of the above rearrangement procedure, one crate is moved from stack 2 to stack 1, resulting in this configuration:
+You browse around the filesystem to assess the situation and save the resulting terminal output (your puzzle input). For example:
 
-    [D]        
-    [N] [C]    
-    [Z] [M] [P]
-     1   2   3 
+    $ cd /
+    $ ls
+    dir a
+    14848514 b.txt
+    8504156 c.dat
+    dir d
+    $ cd a
+    $ ls
+    dir e
+    29116 f
+    2557 g
+    62596 h.lst
+    $ cd e
+    $ ls
+    584 i
+    $ cd ..
+    $ cd ..
+    $ cd d
+    $ ls
+    4060174 j
+    8033020 d.log
+    5626152 d.ext
+    7214296 k
     
 
-In the second step, three crates are moved from stack 1 to stack 3. Crates are moved _one at a time_, so the first crate to be moved (`D`) ends up below the second and third crates:
+The filesystem consists of a tree of files (plain data) and directories (which can contain other directories or files). The outermost directory is called `/`. You can navigate around the filesystem, moving into or out of directories and listing the contents of the directory you're currently in.
 
-            [Z]
-            [N]
-        [C] [D]
-        [M] [P]
-     1   2   3
+Within the terminal output, lines that begin with `$` are _commands you executed_, very much like some modern computers:
+
+*   `cd` means _change directory_. This changes which directory is the current directory, but the specific result depends on the argument:
+    *   `cd x` moves _in_ one level: it looks in the current directory for the directory named `x` and makes it the current directory.
+    *   `cd ..` moves _out_ one level: it finds the directory that contains the current directory, then makes that directory the current directory.
+    *   `cd /` switches the current directory to the outermost directory, `/`.
+*   `ls` means _list_. It prints out all of the files and directories immediately contained by the current directory:
+    *   `123 abc` means that the current directory contains a file named `abc` with size `123`.
+    *   `dir xyz` means that the current directory contains a directory named `xyz`.
+
+Given the commands and output in the example above, you can determine that the filesystem looks visually like this:
+
+    - / (dir)
+      - a (dir)
+        - e (dir)
+          - i (file, size=584)
+        - f (file, size=29116)
+        - g (file, size=2557)
+        - h.lst (file, size=62596)
+      - b.txt (file, size=14848514)
+      - c.dat (file, size=8504156)
+      - d (dir)
+        - j (file, size=4060174)
+        - d.log (file, size=8033020)
+        - d.ext (file, size=5626152)
+        - k (file, size=7214296)
     
 
-Then, both crates are moved from stack 2 to stack 1. Again, because crates are moved _one at a time_, crate `C` ends up below crate `M`:
+Here, there are four directories: `/` (the outermost directory), `a` and `d` (which are in `/`), and `e` (which is in `a`). These directories also contain files of various sizes.
 
-            [Z]
-            [N]
-    [M]     [D]
-    [C]     [P]
-     1   2   3
-    
+Since the disk is full, your first step should probably be to find directories that are good candidates for deletion. To do this, you need to determine the _total size_ of each directory. The total size of a directory is the sum of the sizes of the files it contains, directly or indirectly. (Directories themselves do not count as having any intrinsic size.)
 
-Finally, one crate is moved from stack 1 to stack 2:
+The total sizes of the directories above can be found as follows:
 
-            [Z]
-            [N]
-            [D]
-    [C] [M] [P]
-     1   2   3
-    
+*   The total size of directory `e` is _584_ because it contains a single file `i` of size 584 and no other directories.
+*   The directory `a` has total size _94853_ because it contains files `f` (size 29116), `g` (size 2557), and `h.lst` (size 62596), plus file `i` indirectly (`a` contains `e` which contains `i`).
+*   Directory `d` has total size _24933642_.
+*   As the outermost directory, `/` contains every file. Its total size is _48381165_, the sum of the size of every file.
 
-The Elves just need to know _which crate will end up on top of each stack_; in this example, the top crates are `C` in stack 1, `M` in stack 2, and `Z` in stack 3, so you should combine these together and give the Elves the message _`CMZ`_.
+To begin, find all of the directories with a total size of _at most 100000_, then calculate the sum of their total sizes. In the example above, these directories are `a` and `e`; the sum of their total sizes is _`95437`_ (94853 + 584). (As in this example, this process can count files more than once!)
 
-_After the rearrangement procedure completes, what crate ends up on top of each stack?_
+Find all of the directories with a total size of at most 100000. _What is the sum of the total sizes of those directories?_
 
 ### Part Two
 
-As you watch the crane operator expertly rearrange the crates, you notice the process isn't following your prediction.
+Now, you're ready to choose a directory to delete.
 
-Some mud was covering the writing on the side of the crane, and you quickly wipe it away. The crane isn't a CrateMover 9000 - it's a _<span title="It's way better than the old CrateMover 1006.">CrateMover 9001</span>_.
+The total disk space available to the filesystem is _`70000000`_. To run the update, you need unused space of at least _`30000000`_. You need to find a directory you can delete that will _free up enough space_ to run the update.
 
-The CrateMover 9001 is notable for many new and exciting features: air conditioning, leather seats, an extra cup holder, and _the ability to pick up and move multiple crates at once_.
+In the example above, the total size of the outermost directory (and thus the total amount of used space) is `48381165`; this means that the size of the _unused_ space must currently be `21618835`, which isn't quite the `30000000` required by the update. Therefore, the update still requires a directory with total size of at least `8381165` to be deleted before it can run.
 
-Again considering the example above, the crates begin in the same configuration:
+To achieve this, you have the following options:
 
-        [D]    
-    [N] [C]    
-    [Z] [M] [P]
-     1   2   3 
-    
+*   Delete directory `e`, which would increase unused space by `584`.
+*   Delete directory `a`, which would increase unused space by `94853`.
+*   Delete directory `d`, which would increase unused space by `24933642`.
+*   Delete directory `/`, which would increase unused space by `48381165`.
 
-Moving a single crate from stack 2 to stack 1 behaves the same as before:
+Directories `e` and `a` are both too small; deleting them would not free up enough space. However, directories `d` and `/` are both big enough! Between these, choose the _smallest_: `d`, increasing unused space by _`24933642`_.
 
-    [D]        
-    [N] [C]    
-    [Z] [M] [P]
-     1   2   3 
-    
-
-However, the action of moving three crates from stack 1 to stack 3 means that those three moved crates _stay in the same order_, resulting in this new configuration:
-
-            [D]
-            [N]
-        [C] [Z]
-        [M] [P]
-     1   2   3
-    
-
-Next, as both crates are moved from stack 2 to stack 1, they _retain their order_ as well:
-
-            [D]
-            [N]
-    [C]     [Z]
-    [M]     [P]
-     1   2   3
-    
-
-Finally, a single crate is still moved from stack 1 to stack 2, but now it's crate `C` that gets moved:
-
-            [D]
-            [N]
-            [Z]
-    [M] [C] [P]
-     1   2   3
-    
-
-In this example, the CrateMover 9001 has put the crates in a totally different order: _`MCD`_.
-
-Before the rearrangement process finishes, update your simulation so that the Elves know where they should stand to be ready to unload the final supplies. _After the rearrangement procedure completes, what crate ends up on top of each stack?_
+Find the smallest directory that, if deleted, would free up enough space on the filesystem to run the update. _What is the total size of that directory?_
