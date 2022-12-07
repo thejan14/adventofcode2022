@@ -7,14 +7,25 @@ const execStart = performance.now();
 
 /* begin solution */
 
+// https://jsbench.me/lllbdo9l4y/1
 let answer = 0;
 const markerSize = 4;
 for (let i = markerSize; i < input.length; i++) {
-  const buffer = new Set(input.substring(i - markerSize, i));
-  if (buffer.size === markerSize) {
+  const buffer = input.substring(i - markerSize, i);
+  if (allCharsUnique(buffer)) {
     answer = i;
     break;
   }
+}
+
+function allCharsUnique(str) {
+  for (let i = 0; i < str.length; i++) {
+    if (str.indexOf(str[i]) !== i) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /* end solution */
