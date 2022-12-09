@@ -30,7 +30,7 @@ for (const [, direction, distance] of instructions) {
   while (rope[0][axis] !== goal) {
     rope[0][axis] += step;
     for (let i = 1; i < rope.length; i++) {
-      movetail(rope[i - 1], rope[i]);
+      moveTail(rope[i - 1], rope[i]);
     }
     visited.add(`${rope.at(-1)}`);
   }
@@ -38,19 +38,13 @@ for (const [, direction, distance] of instructions) {
 
 const answer = visited.size;
 
-function movetail(head, tail) {
+function moveTail(head, tail) {
   const delta = [head[0] - tail[0], head[1] - tail[1]];
-  const absDelta = [Math.abs(delta[0]), Math.abs(delta[1])];
-  const moveAxis = absDelta[0] > absDelta[1] ? 0 : 1;
-  const otherAxis = (moveAxis + 1) % 2;
-
-  if (absDelta[moveAxis] > 1) {
-    if (absDelta[otherAxis] > 0) {
-      tail[moveAxis] += Math.sign(delta[moveAxis]);
-      tail[otherAxis] += Math.sign(delta[otherAxis]);
-    } else {
-      tail[moveAxis] += Math.sign(delta[moveAxis]);
-    }
+  if (Math.abs(delta[0]) < 2 && Math.abs(delta[1]) < 2) {
+    return;
+  } else {
+    tail[0] += Math.sign(delta[0]);
+    tail[1] += Math.sign(delta[1]);
   }
 }
 
