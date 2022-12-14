@@ -78,7 +78,7 @@ const posDeltas = [
   [1, 1], // down right
 ];
 while (!final) {
-  [sandX, sandY] = adjSandOrigin;
+  let [sandX, sandY] = adjSandOrigin;
   let resting = false;
   while (!resting) {
     let i = 0;
