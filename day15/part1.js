@@ -10,7 +10,7 @@ const execStart = performance.now();
 const targetY = 2000000;
 const reports = input
   .split("\n")
-  .map((line) => line.match(/\d+/g))
+  .map((line) => line.match(/-?\d+/g))
   .map(([sx, sy, bx, by]) => [Number(sx), Number(sy), Number(bx), Number(by)])
   .map(([sx, sy, bx, by]) => {
     const distance = getManhattanDistance(sx, sy, bx, by);
