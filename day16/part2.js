@@ -7,6 +7,9 @@ const execStart = performance.now();
 
 /* begin solution */
 
+// !  WARNING  ! //
+// - very slow - //
+
 const reportRegex =
   /Valve ([A-Z]+) has flow rate=(\d+); tunnels? leads? to valves? (.*)/g;
 const valveInfos = {};
