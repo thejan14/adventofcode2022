@@ -22,6 +22,7 @@ const blueprintRegex =
 
 const blueprints = input
   .split("\n")
+  .slice(0, 3)
   .map((line) => line.match(blueprintRegex))
   .map(
     ([
@@ -59,11 +60,10 @@ const blueprints = input
     ),
   }));
 
-const answer = blueprints.reduce((acc, b, i) => {
-  const maxGeodes = exploreBlueprint(24, [1, 0, 0, 0], [0, 0, 0, 0], b);
-  const qualityLevel = maxGeodes * (i + 1);
-  return acc + qualityLevel;
-}, 0);
+const answer = blueprints.reduce(
+  (acc, b) => acc * exploreBlueprint(32, [1, 0, 0, 0], [0, 0, 0, 0], b),
+  1
+);
 
 function exploreBlueprint(minutes, robots, resources, blueprint) {
   let bestResult = resources[ResourceType.Geode];
